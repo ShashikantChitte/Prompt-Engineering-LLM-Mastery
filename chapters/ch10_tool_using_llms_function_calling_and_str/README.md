@@ -1,6 +1,5 @@
 # Chapter 10: Tool-Using LLMs: Function Calling and Structured Outputs
 
-
 ## Parts
 
 1. [Why Tools Exist: three fundamental LLM problems](parts/part_01_why_tools_exist_three_fundamental_llm_proble.md)
@@ -8,6 +7,10 @@
 3. [The Tool Arbiter Pattern](parts/part_03_the_tool_arbiter_pattern.md)
 4. [Tool Schemas and Validation](parts/part_04_tool_schemas_and_validation.md)
 5. [Structured Outputs and JSON Mode](parts/part_05_structured_outputs_and_json_mode.md)
+
+## Quick Check
+
+- [Quick demo](quick_demo.md)
 
 ## Code Demos
 
