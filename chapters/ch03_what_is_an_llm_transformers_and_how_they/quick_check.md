@@ -44,7 +44,7 @@ An LSTM passes a single hidden state vector ($h_t$) and cell state vector ($c_t$
 
 #### 2. Sequential Execution Prevents Scaling
 
-RNNs and LSTMs are inherently sequential: calculating step $t$ requires the hidden state from step $t-1$.
+RNNs and LSTMs are inherently sequential: calculating step **$t$** requires the hidden state from step **$t-1$**.
 
 - **No Training Parallelization.** Unlike Transformers—which process every token in a prompt simultaneously—an LSTM must step through a 2,000-token sequence one token at a time. This made training on massive datasets painfully slow on modern GPUs and TPUs.
 - **Limited Model Capacity.** Because sequential processing was so slow, researchers could not easily scale LSTMs to billions of parameters or train them on trillions of tokens, capping their ability to learn complex long-range patterns.
@@ -54,33 +54,33 @@ RNNs and LSTMs are inherently sequential: calculating step $t$ requires the hidd
 LSTMs introduced the **cell state highway** (an additive path controlled by gates) to help gradients flow backward without shrinking to zero. However, this fix had practical limits on very long sequences.
 
 - **Multi-Step Decay.** Even if a forget gate stays at 0.99 at every step, multiplying 0.99 across 500 tokens reduces the signal to $0.99^{500} \approx 0.0066$. Gradients still fade over very long distances, making it hard to learn dependencies separated by hundreds of words.
-- **O(N) Path Length.** Information from token 1 must travel through $N$ sequential recurrent steps to influence token $N$. Every step introduces noise and transformation, whereas self-attention creates a direct **O(1) shortcut** between any two tokens regardless of distance.
+- **O(N) Path Length.** Information from token 1 must travel through $N$ sequential recurrent steps to influence token $N$. Every step introduces noise and transformation, whereas self-attention creates a direct **O(1)* shortcut between any two tokens regardless of distance.
 
 ### Summary: Why Transformers Replaced LSTMs
 
 | Limitation | How LSTMs Handled It | How Transformers Solved It |
 | --- | --- | --- |
 | Memory Capacity | Compressed all past context into one fixed-size cell state vector. | Keeps every past token explicitly accessible via Key-Value (KV) states. |
-| Distance Between Tokens | Linear **O(N)** path length; distant tokens required hundreds of hops. | Direct **O(1)** path length via self-attention between any pair of tokens. |
+| Distance Between Tokens | Linear *O(N)* path length; distant tokens required hundreds of hops. | Direct *O(1)* path length via self-attention between any pair of tokens. |
 | Training Speed | Strictly sequential token-by-token processing. | Fully parallelized across the entire sequence during training. |
 
 ### Q3. In self-attention, what are the Queries, Keys, and Values conceptually? If you doubled the number of attention heads without changing d_model, what would you need to adjust?
 
-Conceptually, **Queries (Q), Keys (K), and Values (V)** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads ($h$) while keeping $d_{model}$ fixed, you must cut the dimension of each individual head ($d_k$ and $d_v$) in half so the total concatenated output still matches $d_{model}$.
+Conceptually, **Queries $(Q)$, Keys $(K)$, and Values $(V)$** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads **($h$)** while keeping **$d_{model}$** fixed, you must cut the dimension of each individual head **($d_k$ and $d_v$)** in half so the total concatenated output still matches **$d_{model}$**.
 
 #### 1. Conceptual Role of Queries, Keys, and Values
 
-Every input token embedding is multiplied by three learned weight matrices ($W_Q$, $W_K$, $W_V$) to produce three distinct vectors:
+Every input token embedding is multiplied by three learned weight matrices **($W_Q$, $W_K$, $W_V$)** to produce three distinct vectors:
 
-- **Query (Q) — "What am I looking for?"** Represents the current token's active search request. For example, in the sentence *"The dog chased the ball because* ***it*** *was bouncy"*, the word *"it"* generates a Query looking for a noun that can bounce.
-- **Key (K) — "What do I offer or describe?"** Acts like an index label or metadata tag advertised by every token in the sequence. The word *"ball"* emits a Key signaling *"I am a round, inanimate object"*, while *"dog"* emits a Key signaling *"I am a living animal"*.
-- **Value (V) — "What actual information do I pass along?"** Contains the rich semantic content of the token. Once the Query from *"it"* matches strongly with the Key from *"ball"* (via a dot product and softmax), the model pulls in the **Value** vector of *"ball"* to update the representation of *"it"*.
+- **Query $(Q)$ — "What am I looking for?"** Represents the current token's active search request. For example, in the sentence *"The dog chased the ball because* **$it$** *was bouncy"*, the word **"$it$"** generates a Query looking for a noun that can bounce.
+- **Key $(K)$ — "What do I offer or describe?"** Acts like an index label or metadata tag advertised by every token in the sequence. The word *"ball"* emits a Key signaling *"I am a round, inanimate object"*, while *"dog"* emits a Key signaling *"I am a living animal"*.
+- **Value $(V)$ — "What actual information do I pass along?"** Contains the rich semantic content of the token. Once the Query from *"it"* matches strongly with the Key from *"ball"* (via a dot product and softmax), the model pulls in the **Value** vector of *"ball"* to update the representation of *"it"*.
 
 #### 2. What Must Change If You Double Attention Heads?
 
 In Multi-Head Attention, the model splits its total embedding width $d_{model}$ evenly across all parallel attention heads rather than running full-width attention multiple times.
 
-- ***Halve the Per-Head Dimension ($d_k$ and $d_v$).*** The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from **64 down to 32**.
+- **Halve the Per-Head Dimension** ***($d_k$ and $d_v$)*.**The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from **64 down to 32**.
 - **Adjust Projection Matrix Shapes.** The learned projection matrices ($W_Q$, $W_K$, $W_V$) for each head change shape from ($d_{model}$, 64) to ($d_{model}$, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix $W_O$ of shape ($d_{model}$, $d_{model}$).
 - **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{d_k}$ to keep gradients stable. Because $d_k$ is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8$ to $\sqrt{32} \approx 5.66$.
 
@@ -143,10 +143,10 @@ During generation, an MoE model behaves very differently from a dense 13B model 
 
 | Metric | Dense 13B Model | Mixtral 8x7B (MoE) |
 | --- | --- | --- |
-| Active Compute per Token | ~13B parameters | ~13B parameters |
-| Total Parameters in VRAM | ~13B (~26 GB in FP16) | **~47B (~94 GB in FP16)** |
-| Single-User Decode Speed | Fast (reads only 13B weights per step) | Slower (unpredictable expert jumps strain memory bandwidth) |
-| Multi-GPU Scaling | Simple (fits on 1 GPU) | Complex (requires Expert/Tensor Parallelism and All-to-All syncs) |
+| **Active Compute per Token** | **~13B parameters** | **~13B parameters** |
+| **Total Parameters in VRAM** | **~13B (~26 GB in FP16)** | **~47B (~94 GB in FP16)** |
+| **Single-User Decode Speed** | Fast (reads only 13B weights per step) | Slower (unpredictable expert jumps strain memory bandwidth) |
+| **Multi-GPU Scaling** | Simple (fits on 1 GPU) | Complex (requires Expert/Tensor Parallelism and All-to-All syncs) |
 
 ### Q6. Flash Attention produces the same mathematical output as standard attention. What exactly does it change, and why does that matter for long-context inference?
 
@@ -162,7 +162,7 @@ $$
 
 FlashAttention changes the **memory access pattern (IO-awareness)** using three execution tricks:
 
-- **SRAM Tiling Instead of Full Matrix Materialization.** Standard attention computes the entire N × N attention score matrix $QK^T$, writes it out to slow HBM (VRAM), reads it back to compute softmax, writes it out again, and reads it back a third time to multiply by V. FlashAttention splits Q, K, and V into small blocks (tiles) that fit inside ultra-fast on-chip SRAM (~20 MB), computing attention block-by-block without ever writing the N × N matrix to HBM.
+- **SRAM Tiling Instead of Full Matrix Materialization.** Standard attention computes the entire *N × N* attention score matrix $QK^T$, writes it out to slow HBM (VRAM), reads it back to compute softmax, writes it out again, and reads it back a third time to multiply by V. FlashAttention splits Q, K, and V into small blocks (tiles) that fit inside ultra-fast on-chip SRAM (~20 MB), computing attention block-by-block without ever writing the *N × N* matrix to HBM.
 - **Online Softmax (Incremental Rescaling).** Because softmax normally needs the sum of all scores across an entire row before normalizing, standard attention must materialize the whole row first. FlashAttention tracks a running maximum and normalization factor as each tile passes through SRAM, rescaling partial outputs on the fly so it only ever stores the compact final output vector.
 - **Kernel Fusion.** Standard frameworks launch separate GPU kernels for matrix multiplication, causal masking, softmax, and dropout—each requiring a round-trip to HBM. FlashAttention fuses all of these steps into a single CUDA kernel so intermediate values stay inside GPU registers and SRAM.
 
@@ -170,7 +170,7 @@ FlashAttention changes the **memory access pattern (IO-awareness)** using three 
 
 During the **prefill phase** (when the model reads your prompt before generating the first token), self-attention must process all N input tokens simultaneously. As N scales to 32K, 128K, or 1M+ tokens, standard attention breaks down:
 
-- **Eliminates the O(N²) Memory Wall.** At a context length of N = 100,000 tokens (with 32 attention heads in FP16), materializing the intermediate N × N attention matrix alone requires **~640 GB of VRAM**—instantly crashing any single GPU. FlashAttention drops memory usage from quadratic O(N²) down to **linear O(N)**, needing only a few megabytes of extra workspace memory regardless of prompt length.
+- **Eliminates the O(N²) Memory Wall.** At a context length of N = 100,000 tokens (with 32 attention heads in FP16), materializing the intermediate *N × N* attention matrix alone requires **~640 GB of VRAM**—instantly crashing any single GPU. FlashAttention drops memory usage from quadratic O(N²) down to **linear O(N)**, needing only a few megabytes of extra workspace memory regardless of prompt length.
 - **Slashes Time-to-First-Token (TTFT).** On long prompts, standard attention spends the vast majority of its runtime waiting on slow HBM data transfers rather than doing math. By keeping operations inside fast SRAM (which has roughly 10x higher bandwidth than HBM), FlashAttention speeds up long-context prefill by **2x to 8x**, turning multi-second prompt processing stalls into sub-second responses.
 - **Frees VRAM for Larger KV Caches and Batches.** Because attention calculations no longer spike VRAM usage during prefill, serving engines like vLLM and SGLang can dedicate almost all remaining GPU memory to holding longer **KV caches** or serving more concurrent users simultaneously.
 
@@ -178,7 +178,7 @@ During the **prefill phase** (when the model reads your prompt before generating
 
 | Dimension | Standard Self-Attention | FlashAttention |
 | --- | --- | --- |
-| Intermediate N × N Matrix | Written and read multiple times in slow HBM. | Never materialized in HBM; computed block-by-block in SRAM. |
+| Intermediate *N × N* Matrix | Written and read multiple times in slow HBM. | Never materialized in HBM; computed block-by-block in SRAM. |
 | Memory Scaling with Context (N) | **Quadratic O(N²)** — quickly causes OOM errors on long prompts. | **Linear O(N)** — scales effortlessly to 128K–1M+ tokens. |
 | Primary Bottleneck | **Memory-bandwidth bound** (stalled by HBM reads/writes). | **Compute-bound** (keeps Tensor Cores running near peak FLOPs). |
 | Long-Context Prefill (TTFT) | Slow due to heavy memory I/O overhead. | **2x to 8x faster** while producing bit-for-bit equivalent math. |
