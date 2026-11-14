@@ -41,11 +41,7 @@ AI operates quietly behind the scenes across nearly every modern industry.
 
 Think of AI as a large tree:
 
-
-
-![image1](../../../assets/images/image1.png)
-
-
+<img src="../../../assets/images/image1.png" alt="image1" width="600">
 
 The primary goals of AI are:
 

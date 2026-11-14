@@ -4,7 +4,7 @@
 
 Choosing the right reasoning technique depends on balancing task complexity, error tolerance, latency, and token budget. Every step up in reasoning sophistication trades extra inference compute for higher reliability.
 
-### 1. Decision Matrix by Problem Type
+## 1. Decision Matrix by Problem Type
 
 | Problem Profile | Recommended Technique | Why It Fits | Compute Cost |
 | --- | --- | --- | --- |
@@ -14,7 +14,7 @@ Choosing the right reasoning technique depends on balancing task complexity, err
 | Combinatorial search, puzzles, or multi-step planning | **Tree of Thoughts (ToT)** | Enables lookahead evaluation and backtracking when early choices lead to dead ends. | **10x – 100x** |
 | Code generation, long-form writing, or strict schemas | **Reflection / Self-Critique** | Separates generation from rubric-based auditing, ideally anchored by unit tests or linters. | **2x – 4x** |
 
-### 2. Three Questions to Pick Your Strategy
+## 2. Three Questions to Pick Your Strategy
 
 Walk through these three filters in order before adding complexity:
 
@@ -27,7 +27,7 @@ Walk through these three filters in order before adding complexity:
 - **Filter 3: Do early decisions lock out valid solutions later?**
   - *Yes (planning, scheduling, complex debugging, constraint puzzles):* Upgrade to **Tree of Thoughts (ToT)** so the system can branch, score intermediate states, and backtrack.
 
-### 3. Production Rule of Thumb: Escalate Gradually
+## 3. Production Rule of Thumb: Escalate Gradually
 
 Never start with Tree of Thoughts or heavy multi-agent loops on day one. Follow an incremental escalation ladder:
 

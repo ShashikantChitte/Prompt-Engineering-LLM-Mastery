@@ -7,7 +7,6 @@
 Instead of relying on a single greedy decoding pass—where one early arithmetic slip or logic hallucination ruins the entire output—Self-Consistency treats reasoning like a consensus problem across multiple independent attempts.
 
 ### 1. How Self-Consistency Works
-
 The technique replaces standard greedy decoding (temperature = 0) with a three-step pipeline:
 
 1. **Sample Diverse Reasoning Paths:** Query the model N times (typically N = 5 to 40) using the exact same CoT prompt with a non-zero temperature (e.g., temperature = 0.5 to 0.8) so the model explores different ways to solve the problem.

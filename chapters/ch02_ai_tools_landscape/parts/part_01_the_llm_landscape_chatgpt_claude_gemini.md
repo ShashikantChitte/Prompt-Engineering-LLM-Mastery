@@ -3,11 +3,9 @@
 > Chapter 2: AI Tools Landscape
 
 **The LLM Landscape**
-
 The Large Language Model (LLM) landscape has rapidly shifted from a handful of dominant proprietary models into a hyper-competitive, diversified ecosystem split between elite closed frontier systems and exceptionally strong open-weight alternatives. Driven by massive leaps in context management, reasoning paradigms, and agentic orchestration, the core computational models now sit inside a dense infrastructure and tooling stack.
 
 **The Major Model Families**
-
 The market is currently dominated by four distinct major vendors and a collection of powerful open-source alternatives, each bringing unique architectural strengths to the table:
 
 | Vendor / Ecosystem | Core Model Families | Primary Strengths & Use Cases |
