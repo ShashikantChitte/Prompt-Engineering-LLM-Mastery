@@ -15,7 +15,6 @@ A standard 500-page legal document contains roughly 250,000 words, which transla
 Shifting from a 128K/200K window to a 1M+ window changes your entire infrastructure from a complex data-engineering puzzle into a direct ingest pipeline.
 
 
-
 <img src="../../../assets/images/image4.png" alt="Traditional vs Long Context Architecture" width="600">
 
 
@@ -77,9 +76,7 @@ While both tools ultimately call powerful large language models (like Claude or 
 GitHub Copilot is architected as an **Application Extension**. It runs inside a restricted sandbox environment provided by the IDE host's API (whether it is VS Code, JetBrains, or Neovim).
 
 
-
-<img src="../../../assets/images/image5.png" alt="GitHub Copilot Architecture" width="600">
-
+<img src="../../assets/images/image4.png" alt="Traditional vs Long Context Architecture" width="700">
 
 
 **Context Scoping:** Copilot relies primarily on the IDE's standard extension APIs to scrape text. It looks at your **active tab** and a limited heuristic window of recently visited or neighboring open files.
@@ -92,7 +89,7 @@ Cursor is an **AI-Native Forked Core**. The team literally took the open-source 
 
 
 
-<img src="../../../assets/images/image6.png" alt="Cursor IDE Core Architecture" width="600">
+<img src="../../assets/images/image6.png" alt="Cursor IDE Core Architecture" width="700">
 
 
 - **Continuous Semantic Indexing (Local-to-Cloud Pipeline):** Cursor runs a continuous background data pipeline directly over your entire repository. It parses files locally using an Abstract Syntax Tree (AST) chunking engine, builds a local hierarchical **Merkle Tree** to instantly track file state changes (diffs), hashes the modified code, and syncs vector embeddings to a lightning-fast semantic search index.
