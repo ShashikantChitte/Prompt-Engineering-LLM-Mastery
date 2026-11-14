@@ -1,3 +1,5 @@
+                                                                [Next ➡️](part_02_machine_learning.md)
+
 # Chapter 1 - Part 1: Artificial Intelligence
 
 > Chapter 1: Introduction
