@@ -66,7 +66,7 @@ LSTMs introduced the **cell state highway** (an additive path controlled by gate
 
 ### Q3. In self-attention, what are the Queries, Keys, and Values conceptually? If you doubled the number of attention heads without changing d_model, what would you need to adjust?
 
-Conceptually, **Queries (Q), Keys (K), and Values (V)** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads (h) while keeping d_model fixed, you must cut the dimension of each individual head (*d**<sub>k</sub>* and *d**<sub>v</sub>*) in half so the total concatenated output still matches *d*<sub>model</sub>.
+Conceptually, **Queries (Q), Keys (K), and Values (V)** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads (h) while keeping d_model fixed, you must cut the dimension of each individual head (*d*<sub>k</sub>* and *d*<sub>v</sub>*) in half so the total concatenated output still matches *d*<sub>model</sub>.
 
 #### 1. Conceptual Role of Queries, Keys, and Values
 
@@ -80,17 +80,17 @@ Every input token embedding is multiplied by three learned weight matrices (W<su
 
 In Multi-Head Attention, the model splits its total embedding width *d*<sub>model</sub> evenly across all parallel attention heads rather than running full-width attention multiple times.
 
-- **Halve the Per-Head Dimension (*****d******<sub>k</sub>*** **and** ***d******<sub>v</sub>*****).** The standard relationship is *d*<sub>model</sub> = *h* X *d**<sub>k</sub>*. If *d*<sub>model</sub> stays at 512 and you double the heads from 8 to 16, each head's projection size (d_k and d_v) must shrink from **64 down to 32**.
+- ***Halve the Per-Head Dimension ($d_k$ and $d_v$).*** The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from **64 down to 32**.
 - **Adjust Projection Matrix Shapes.** The learned projection matrices (*W**<sub>Q</sub>**, W**<sub>K</sub>**, W**<sub>V</sub>*) for each head change shape from (*d*<sub>model</sub>, 64) to (*d*<sub>model</sub>, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix *W**<sub>O</sub>* of shape (*d*<sub>model,</sub> *d*<sub>model</sub>).
-- **Update the Scaling Factor** $(\sqrt{{d}_{k}})$**.** Inside scaled dot-product attention, scores are divided by $\sqrt{{d}_{k}}$ to keep gradients stable. Because *d**<sub>k</sub>* is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8 \text{to} \sqrt{32} \approx 5.66$
+- **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{{d}_{k}}$ to keep gradients stable. Because *d**<sub>k</sub>* is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8 \text{to} \sqrt{32} \approx 5.66$
 
 ### Summary of the Trade-Off
 
 | Parameter | Before Doubling Heads | After Doubling Heads | Impact on the Model |
 | --- | --- | --- | --- |
-| Model Dimension (d<sub>model</sub>) | 512 | 512 (Unchanged) | Total parameter count and FLOPs stay roughly identical. |
-| Number of Heads (h) | 8 | 16 (Doubled) | Model can track twice as many distinct relationship subspaces (e.g., syntax, coreference, tone) simultaneously. |
-| Head Dimension (*d**<sub>k</sub>*, *d**<sub>v</sub>*) | 64 | 32 (Halved) | Each individual head has less representational capacity to capture complex features on its own. |
+| M**odel Dimension (*d<sub>model</sub>*)** | 512 | 512 (Unchanged) | Total parameter count and FLOPs stay roughly identical. |
+| **Number of Heads (h)** | 8 | 16 (Doubled) | Model can track twice as many distinct relationship subspaces (e.g., syntax, coreference, tone) simultaneously. |
+| **Head Dimension ($d_k$, $d_v$)** | 64 | 32 (Halved) | Each individual head has less representational capacity to capture complex features on its own. |
 
 ### Q4. You have a 4096-token prompt and you want to generate 500 tokens. Without KV cache, roughly how many attention operations does the decode phase require compared to with KV cache? (Order of magnitude is fine.)
 

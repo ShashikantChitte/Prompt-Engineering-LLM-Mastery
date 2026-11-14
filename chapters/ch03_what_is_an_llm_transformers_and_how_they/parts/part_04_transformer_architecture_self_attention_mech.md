@@ -79,10 +79,10 @@ Let's track this process using a simple example sentence: "**The bank was muddy.
 
 ### Step 1: Projecting Q, K, and V
 
-The raw embedding vector for "bank" (×<sub>bank</sub>) is multiplied by the three trained weight matrices to create three new vectors:
+The raw embedding vector for "bank" (*×*<sub>bank</sub>) is multiplied by the three trained weight matrices to create three new vectors:
 
 - **Query (***Q**<sub>bank</sub>***):** What is this word looking for? (e.g., "*I am an ambiguous noun, looking for surrounding context words that explain my setting.*")
-- **Key (***K**<sub>bank</sub>*): What kind of identity or context does this word offer to others?
+- **Key (***K**<sub>bank</sub>***):** What kind of identity or context does this word offer to others?
 - **Value (***V**<sub>bank</sub>***):** The actual semantic information or content of the word that will be passed forward if matched.
 
 (Every other word in the sentence—"*The*", "*was*", "*muddy*"—simultaneously generates its own Q, K, and V vectors.)
@@ -97,9 +97,9 @@ $$
 
 The dot product is a geometric measurement of alignment. If two vectors point in similar directions in high-dimensional space, the dot product yields a massive positive number.
 
-- ${Q}_{\text{bank}} \cdot {K}_{\text{the}} \to$**Low score**
-- ${Q}_{\text{bank}} \cdot {K}_{\text{was}} \to$**Low score**
-- ${Q}_{\text{bank}} \cdot {K}_{\text{muddy}} \to$**High score** (because “muddy” provides the exact environmental context the query wanted).
+- \(Q_{\text{bank}} \cdot K_{\text{the}} \rightarrow \textbf{Low score}\)
+- \(Q_{\text{bank}} \cdot K_{\text{was}} \rightarrow \textbf{Low score}\)
+- \(Q_{\text{bank}} \cdot K_{\text{muddy}} \rightarrow \textbf{High score}\) (because “muddy” provides the exact environmental context the query wanted).
 
 ### Step 3: Scaling and Softmax (Normalisation)
 
