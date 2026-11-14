@@ -94,7 +94,7 @@ In Multi-Head Attention, the model splits its total embedding width $d_{model}$ 
 
 ### Q4. You have a 4096-token prompt and you want to generate 500 tokens. Without KV cache, roughly how many attention operations does the decode phase require compared to with KV cache? (Order of magnitude is fine.)
 
-Without a KV cache, the decode phase requires roughly 4,350× more attention operations—on the order of **\(10^{10}\)** token-pair interactions compared to **\(10^{6}\)** with a KV cache.
+Without a KV cache, the decode phase requires roughly 4,350× more attention operations—on the order of **$10^{10}$** token-pair interactions compared to **$10^{6}$** with a KV cache.
 
 ### Step-by-Step Breakdown
 
