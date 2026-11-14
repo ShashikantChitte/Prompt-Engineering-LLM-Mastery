@@ -1,4 +1,4 @@
-# FDE - Module 1: Course Framework
+# Prompt Engineering & LLM Mastery
 
 Markdown notes and runnable Python demos generated from the course document. Each chapter has one folder with a README, one Markdown file per part, a Quick Check file, and a `demos/` folder.
 
