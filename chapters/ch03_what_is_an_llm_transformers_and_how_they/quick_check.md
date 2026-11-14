@@ -72,7 +72,7 @@ Conceptually, **Queries $(Q)$, Keys $(K)$, and Values $(V)$** work like a soft, 
 
 Every input token embedding is multiplied by three learned weight matrices **($W_Q$, $W_K$, $W_V$)** to produce three distinct vectors:
 
-- **Query $(Q)$ — "What am I looking for?"** Represents the current token's active search request. For example, in the sentence *"The dog chased the ball because* **$it$** *was bouncy"*, the word **"$it$"** generates a Query looking for a noun that can bounce.
+- **Query $(Q)$ — "What am I looking for?"** Represents the current token's active search request. For example, in the sentence *"The dog chased the ball because* **$it$** *was bouncy"*, the word **$"it"$** generates a Query looking for a noun that can bounce.
 - **Key $(K)$ — "What do I offer or describe?"** Acts like an index label or metadata tag advertised by every token in the sequence. The word *"ball"* emits a Key signaling *"I am a round, inanimate object"*, while *"dog"* emits a Key signaling *"I am a living animal"*.
 - **Value $(V)$ — "What actual information do I pass along?"** Contains the rich semantic content of the token. Once the Query from *"it"* matches strongly with the Key from *"ball"* (via a dot product and softmax), the model pulls in the **Value** vector of *"ball"* to update the representation of *"it"*.
 
@@ -80,7 +80,7 @@ Every input token embedding is multiplied by three learned weight matrices **($W
 
 In Multi-Head Attention, the model splits its total embedding width $d_{model}$ evenly across all parallel attention heads rather than running full-width attention multiple times.
 
-- **Halve the Per-Head Dimension** ***($d_k$ and $d_v$)*.**The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from **64 down to 32**.
+- **Halve the Per-Head Dimension** *($d_k$ and $d_v$)***.**The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from 64 down to 32.
 - **Adjust Projection Matrix Shapes.** The learned projection matrices ($W_Q$, $W_K$, $W_V$) for each head change shape from ($d_{model}$, 64) to ($d_{model}$, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix $W_O$ of shape ($d_{model}$, $d_{model}$).
 - **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{d_k}$ to keep gradients stable. Because $d_k$ is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8$ to $\sqrt{32} \approx 5.66$.
 
@@ -94,19 +94,19 @@ In Multi-Head Attention, the model splits its total embedding width $d_{model}$ 
 
 ### Q4. You have a 4096-token prompt and you want to generate 500 tokens. Without KV cache, roughly how many attention operations does the decode phase require compared to with KV cache? (Order of magnitude is fine.)
 
-Without a KV cache, the decode phase requires roughly 4,350× more attention operations—on the order of **$10^{10}$** token-pair interactions compared to **$10^{6}$** with a KV cache.
+Without a *KV* cache, the decode phase requires roughly 4,350× more attention operations—on the order of **$10^{10}$** token-pair interactions compared to **$10^{6}$** with a *KV* cache.
 
 ### Step-by-Step Breakdown
 
 Let $P = 4096$ be the prompt length and $G = 500$ be the number of generated tokens. At each decode step $i$ (from 1 to 500), the total sequence length is $L_i = P + i$ (growing from 4,097 up to 4,596).
 
-- **Without KV Cache (O(L²) per step):** Because nothing is saved, the model recomputes all Keys, Queries, and Values from scratch for every token in the sequence at every step. This requires computing a full $L_i \times L_i$ attention matrix at each iteration:
+- **Without *KV* Cache (O(L²) per step):** Because nothing is saved, the model recomputes all Keys, Queries, and Values from scratch for every token in the sequence at every step. This requires computing a full $L_i \times L_i$ attention matrix at each iteration:
 
 $$
 \sum_{i=1}^{500} {\left( 4096 + i \right)}^{2} \approx 500 \times {\left( 4346 \right)}^{2} \approx 9.46 \times 10^{9}\text{ operations}
 $$
 
-- **With KV Cache (O(L) per step):** Past Keys and Values are stored in GPU memory. The model only computes a single Query vector for the newest token and attends it against the $L_i$ cached Keys ($1 \times L_i$):
+- **With *KV* Cache (O(L) per step):** Past Keys and Values are stored in GPU memory. The model only computes a single Query vector for the newest token and attends it against the $L_i$ cached Keys ($1 \times L_i$):
 
 $$
 \sum_{i=1}^{500} \left( 4096 + i \right) \approx 500 \times 4346 \approx 2.17 \times 10^{6}\text{ operations}
@@ -114,30 +114,30 @@ $$
 
 ### Comparison Summary
 
-| Metric | Without KV Cache | With KV Cache |
+| Metric | Without $KV Cache | With KV Cache |
 | --- | --- | --- |
 | Work at Step $i$ | $(4096 + i)^2$ token-pair scores | $1 \times (4096 + i)$ token-pair scores |
 | Total Decode Operations | $\approx 9.46 \times 10^{9} (\sim 10^{10})$ | $\approx 2.17 \times 10^{6} (\sim 10^{6})$ |
 | Scaling Complexity | Quadratic per step (O(G . L²)) | Linear per step O(G . L) |
-| Relative Overhead | **~ 4,350 X more compute** (roughly the average sequence length) | Baseline (1 X) |
+| Relative Overhead | ~ 4,350 X more compute (roughly the average sequence length) | Baseline (1 X) |
 
 ### Q5. A Mistral 8x7B MoE model has ~47B total parameters but ~13B active per token. What are the two main downsides of MoE compared to a dense model of the same active-parameter count?
 
-Compared to a dense ~13B parameter model, the two main downsides of a **Mixtral 8x7B** MoE model are massive VRAM (memory) requirements and poor memory-bandwidth efficiency at small batch sizes, alongside increased multi-GPU communication and routing complexity.
+Compared to a dense **~13B** parameter model, the two main downsides of a **Mixtral 8x7B** MoE model are massive **VRAM** (memory) requirements and poor memory-bandwidth efficiency at small batch sizes, alongside increased multi-GPU communication and routing complexity.
 
 #### 1. Full Memory Footprint (VRAM Capacity Bottleneck)
 
-Even though Mixtral 8x7B activates only **~13B parameters** per token, the GPU cannot predict which two experts the next token will choose.
+Even though **Mixtral 8x7B** activates only **~13B parameters** per token, the GPU cannot predict which two experts the next token will choose.
 
 - **All Weights Must Stay Loaded.** All **~47B parameters** must reside in fast GPU High Bandwidth Memory (HBM) simultaneously.
-- **Hardware Cost Jump.** While a dense 13B model fits easily on a single consumer or mid-range GPU (~26 GB in FP16, or ~8 GB in 4-bit), Mixtral 8x7B requires **~94 GB in FP16**—forcing you onto multi-GPU setups (such as two 80 GB A100s) or aggressive quantization just to load the weights.
+- **Hardware Cost Jump.** While a dense **13B** model fits easily on a single consumer or mid-range GPU (**~26 GB in FP16, or ~8 GB in 4-bit**), Mixtral 8x7B requires **~94 GB in FP16**—forcing you onto multi-GPU setups (such as two 80 GB A100s) or aggressive quantization just to load the weights.
 
 #### 2. Low Arithmetic Intensity & Communication Overhead
 
-During generation, an MoE model behaves very differently from a dense 13B model when serving traffic or splitting across GPUs.
+During generation, an **MoE** model behaves very differently from a dense 13B model when serving traffic or splitting across GPUs.
 
-- **Memory-Bandwidth Bottleneck at Small Batches.** In a dense 13B model, every token in a small batch reuses the exact same 13B weights. In Mixtral 8x7B, a batch of just 4 to 8 tokens can trigger *all 8 experts* across a layer, forcing the GPU to read almost the entire **47B parameter pool** from HBM while doing only 13B worth of math per token.
-- **All-to-All Communication Overhead.** When the model is split across multiple GPUs using **Expert Parallelism**, tokens must be shuffled over GPU interconnects (All-to-All collectives) to reach the specific GPU holding their assigned experts, adding synchronization latency that a single-GPU dense 13B model avoids completely.
+- **Memory-Bandwidth Bottleneck at Small Batches.** In a dense **13B** model, every token in a small batch reuses the exact same **13B** weights. In **Mixtral 8x7B**, a batch of just 4 to 8 tokens can trigger *all 8 experts* across a layer, forcing the GPU to read almost the entire **47B parameter pool** from HBM while doing only **13B** worth of math per token.
+- **All-to-All Communication Overhead.** When the model is split across multiple GPUs using **Expert Parallelism**, tokens must be shuffled over GPU interconnects (All-to-All collectives) to reach the specific GPU holding their assigned experts, adding synchronization latency that a single-GPU dense **13B** model avoids completely.
 
 ### Quick Comparison: Mixtral 8x7B vs. Dense 13B
 
@@ -150,7 +150,7 @@ During generation, an MoE model behaves very differently from a dense 13B model 
 
 ### Q6. Flash Attention produces the same mathematical output as standard attention. What exactly does it change, and why does that matter for long-context inference?
 
-**FlashAttention** changes how and where the attention math is scheduled across the GPU's memory hierarchy—specifically by tiling inputs into fast on-chip **SRAM** and fusing operations so the massive intermediate attention matrix is never written to slow GPU main memory (**HBM**). For long-context inference, this eliminates the **quadratic O(N²) memory bottleneck** and drastically cuts slow HBM read/write traffic, preventing Out-of-Memory (OOM) crashes and slashing Time-to-First-Token (TTFT).
+**FlashAttention** changes how and where the attention math is scheduled across the GPU's memory hierarchy—specifically by tiling inputs into fast on-chip **SRAM** and fusing operations so the massive intermediate attention matrix is never written to slow GPU main memory (**HBM**). For long-context inference, this eliminates the **quadratic *O(N²)* memory bottleneck** and drastically cuts slow HBM read/write traffic, preventing Out-of-Memory (OOM) crashes and slashing Time-to-First-Token (TTFT).
 
 ### What FlashAttention Actually Changes
 
@@ -168,9 +168,9 @@ FlashAttention changes the **memory access pattern (IO-awareness)** using three 
 
 ### Why This Matters for Long-Context Inference
 
-During the **prefill phase** (when the model reads your prompt before generating the first token), self-attention must process all N input tokens simultaneously. As N scales to 32K, 128K, or 1M+ tokens, standard attention breaks down:
+During the **prefill phase** (when the model reads your prompt before generating the first token), self-attention must process all *N* input tokens simultaneously. As *N* scales to 32K, 128K, or 1M+ tokens, standard attention breaks down:
 
-- **Eliminates the O(N²) Memory Wall.** At a context length of N = 100,000 tokens (with 32 attention heads in FP16), materializing the intermediate *N × N* attention matrix alone requires **~640 GB of VRAM**—instantly crashing any single GPU. FlashAttention drops memory usage from quadratic O(N²) down to **linear O(N)**, needing only a few megabytes of extra workspace memory regardless of prompt length.
+- **Eliminates the *O(N²)* Memory Wall.** At a context length of *N* = 100,000 tokens (with 32 attention heads in FP16), materializing the intermediate *N × N* attention matrix alone requires **~640 GB of VRAM**—instantly crashing any single GPU. FlashAttention drops memory usage from quadratic *O(N²)* down to **linear O(N)**, needing only a few megabytes of extra workspace memory regardless of prompt length.
 - **Slashes Time-to-First-Token (TTFT).** On long prompts, standard attention spends the vast majority of its runtime waiting on slow HBM data transfers rather than doing math. By keeping operations inside fast SRAM (which has roughly 10x higher bandwidth than HBM), FlashAttention speeds up long-context prefill by **2x to 8x**, turning multi-second prompt processing stalls into sub-second responses.
 - **Frees VRAM for Larger KV Caches and Batches.** Because attention calculations no longer spike VRAM usage during prefill, serving engines like vLLM and SGLang can dedicate almost all remaining GPU memory to holding longer **KV caches** or serving more concurrent users simultaneously.
 
@@ -179,7 +179,7 @@ During the **prefill phase** (when the model reads your prompt before generating
 | Dimension | Standard Self-Attention | FlashAttention |
 | --- | --- | --- |
 | Intermediate *N × N* Matrix | Written and read multiple times in slow HBM. | Never materialized in HBM; computed block-by-block in SRAM. |
-| Memory Scaling with Context (N) | **Quadratic O(N²)** — quickly causes OOM errors on long prompts. | **Linear O(N)** — scales effortlessly to 128K–1M+ tokens. |
+| Memory Scaling with Context (N) | **Quadratic *O(N²)*** — quickly causes OOM errors on long prompts. | **Linear *O(N)*** — scales effortlessly to 128K–1M+ tokens. |
 | Primary Bottleneck | **Memory-bandwidth bound** (stalled by HBM reads/writes). | **Compute-bound** (keeps Tensor Cores running near peak FLOPs). |
 | Long-Context Prefill (TTFT) | Slow due to heavy memory I/O overhead. | **2x to 8x faster** while producing bit-for-bit equivalent math. |
 
