@@ -159,7 +159,7 @@ The original 26-word sentence (**28 tokens** in GPT-4 / GPT-4o) can be compresse
 | Original | *"I would be very grateful if you could please assist me in analyzing the following data and providing your expert insights and recommendations."* | **28 tokens** | Contains 14 tokens of pure conversational politeness (*"I would be very grateful if you could please assist me in..."*) and redundant filler (*"the following"*, *"your expert"*). |
 | Compressed | *"Analyze this data; provide insights and recommendations."* | **7 tokens** | Preserves all three core imperatives (**analyze**, **insights**, **recommendations**) and the target object (**data**) while stripping 100% of the fluff. |
 
-### Q0. The number "2023" tokenizes differently from "2024" in some tokenizers. Why does this happen, and what does it reveal about how LLMs handle arithmetic?
+### Q7. The number "2023" tokenizes differently from "2024" in some tokenizers. Why does this happen, and what does it reveal about how LLMs handle arithmetic?
 
 "2023" and "2024" tokenize differently in older tokenizers because BPE allocates vocabulary tokens based on raw frequency in the training data, rather than understanding mathematical structure. If a tokenizer was trained on a dataset collected around 2023 or 2024, whichever year appeared more frequently in the text earned its own dedicated single token (e.g., ["2023"] = 1 token), while a less frequent or future year got split into arbitrary subword pieces (e.g., ["202", "4"] or ["20", "24"] = 2 tokens).
 

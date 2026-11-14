@@ -195,7 +195,7 @@ To switch your tool definition from Google Gemini (function_declarations) to Ant
 
 ***1. Before: Gemini Tool Definition**
 
-```python
+```json
 gemini_tools = [
     {
         "function_declarations": [
@@ -225,7 +225,7 @@ gemini_tools = [
 
 ***2. After: Anthropic Claude Tool Definition**
 
-```python
+```json
 anthropic_tools = [
     {
         "name": "get_exchange_rate",

@@ -16,7 +16,7 @@
 
 ### 2. Code Generation Prompt Template
 
-```text
+```xml
 <role>
 You are a senior backend engineer writing clean, production-grade code.
 </role>
@@ -90,7 +90,7 @@ To prevent the model from guessing library versions or emitting half-finished sk
 - **Use Test-Driven Prompting.** Whenever possible, paste 2–3 unit tests first and instruct the model to write the implementation that passes them.
 - **Enforce Anti-Laziness Rules.** Explicitly forbid # ... rest of implementation or pass stubs.
 
-```text
+```xml
 <role>
 You are a senior backend engineer writing clean, production-grade TypeScript.
 </role>
@@ -138,7 +138,7 @@ Explicitly instruct the model to try to *break* the code under high concurrency,
 - **Require Severity + Reproduction Trigger.** Force the model to explain *how* an attacker or edge case triggers each issue so it does not hallucinate false positives.
 - **Demand Minimal Diffs.** Ask for targeted patches rather than rewriting untouched functions.
 
-```text
+```xml
 <role>
 You are a principal software architect and application security auditor conducting a strict pull-request review.
 </role>

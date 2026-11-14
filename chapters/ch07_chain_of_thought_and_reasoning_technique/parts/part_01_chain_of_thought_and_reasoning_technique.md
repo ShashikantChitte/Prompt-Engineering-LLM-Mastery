@@ -121,7 +121,7 @@ Different tasks benefit from specific scratchpad layouts depending on whether yo
 
 ### 3. Example: XML Scratchpad for Production Parsing
 
-```text
+```xml
 Analyze whether the user qualifies for a refund based on our 14-day policy.
 Put all intermediate checks inside <scratchpad> tags, then put only YES or NO inside <answer> tags.
 

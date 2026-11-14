@@ -77,7 +77,7 @@ Even well-written system prompts can weaken over long conversations if not struc
 
 ### 4. Example: Behavioral System Prompt for a Customer Operations Agent
 
-```text
+```xml
 You are an automated Tier-1 support agent for an Indian fintech payments platform.
 <interaction_rules>
 - Verify the user's transaction ID before discussing account-specific details.

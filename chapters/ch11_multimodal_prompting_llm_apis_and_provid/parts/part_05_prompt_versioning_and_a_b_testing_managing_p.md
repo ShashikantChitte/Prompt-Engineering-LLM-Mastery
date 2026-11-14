@@ -81,7 +81,7 @@ Never bury long multi-line f-strings inside business logic files. Store prompts 
 
 2. Example: A Structured Prompt-as-Code File (**invoice_extractor.yaml**)
 
-```text
+```yaml
 id: invoice_extractor
 version: 1.4.0
 description: Extracts structured line items and tax totals from vendor invoices.
@@ -215,6 +215,7 @@ Key Structural Differences (Side-by-Side)
 
 ## OpenAI (chat.completions.create):
 
+```python
 response = openai_client.chat.completions.create(
 
 model="gpt-4o",
@@ -229,10 +230,13 @@ messages=[
 
 )
 
-print(response.choices[0].message.content)
+
+print(response.choices[0].message.content)```
+```
 
 ## Anthropic (messages.create):
 
+```python
 response = anthropic_client.messages.create(
 
 model="claude-sonnet-4-6",
@@ -250,6 +254,7 @@ messages=[
 )
 
 print(response.content[0].text)
+```
 
 4. **In the streaming demo, each chunk contains delta.content with only the new tokens. Why does the API send deltas rather than the full accumulated text in each chunk?**
 
@@ -340,7 +345,7 @@ To switch your tool definition from Google Gemini (function_declarations) to Ant
 
 ### 1. Before: Gemini Tool Definition
 
-```text
+```json
 gemini_tools = [
     {
         "function_declarations": [
@@ -369,7 +374,7 @@ gemini_tools = [
 
 ### 2. After: Anthropic Claude Tool Definition
 
-```yaml
+```json
 anthropic_tools = [
     {
         "name": "get_exchange_rate",

@@ -58,7 +58,7 @@ When you feed text into BERT, it runs through three distinct stages before touch
 
 | Dimension | BERT (WordPiece) | Modern LLMs (Byte-Level BPE) |
 | --- | --- | --- |
-| How Merges Are Chosen | **Mutual Information / Likelihood:**    Scores pairs by$\frac{\text{freq}\left( AB \right)}{\text{freq}\left( A \right) \times \text{freq}\left( B \right)},$    favoring rare pairs that strongly belong together (like q + u). | **Raw Frequency:** Simply merges whichever adjacent pair appears most often in the training corpus. |
+| How Merges Are Chosen | **Mutual Information / Likelihood:** Scores pairs by $\frac{\text{freq}(AB)}{\text{freq}(A) \times \text{freq}(B)}$, favoring rare pairs that strongly belong together (like q + u). | **Raw Frequency:** Simply merges whichever adjacent pair appears most often in the training corpus. |
 | Inference Encoding Rule | **Longest-Match-First:** Greedily grabs the longest matching prefix in the vocabulary; does not store merge history. | **Ordered Merge Replay:** Applies learned merge rules in exact chronological priority order. |
 | Whitespace & Word Boundaries | **Destructive (## prefix):** Strips spaces and marks mid-word continuations with ## (e.g., "play" + "##ing"). | **Lossless (Ġ or raw space):** Keeps spaces attached to tokens (e.g., " play" vs "play"), allowing exact reconstruction of formatting and indentation. |
 | Handling Unknown Text | **Falls back to [UNK]:** If a word contains an unseen character or emoji, the entire word becomes [UNK]. | **Zero <UNK> tokens:** Falls back to the 256 raw UTF-8 bytes, handling any symbol, code, or script cleanly. |

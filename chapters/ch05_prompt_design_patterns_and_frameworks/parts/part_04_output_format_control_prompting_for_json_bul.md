@@ -82,7 +82,7 @@ When instructing a model via text alone (or reinforcing an API schema), include 
 - **Include 1 Concrete Example.** Showing a single 4-line example of the exact JSON shape eliminates almost all structural ambiguity.
 3. **Copy-Pasteable JSON Prompt Template**
 
-```text
+```xml
 <task>
 Extract customer order details from the message below into a single JSON object.
 </task>
