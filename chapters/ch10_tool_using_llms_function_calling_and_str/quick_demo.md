@@ -1,4 +1,8 @@
-# Chapter 10 Quick Check - Tool-Using LLMs: Function Calling and Structured Outputs
+# Chapter 10 Quick Check
+
+> Chapter 10: - Tool-Using LLMs: Function Calling and Structured Outputs
+
+> Related part: System Prompt Architecture
 
 ## 1. A user asks an LLM what the current USD/INR exchange rate is. The model confidently gives a number from its training data. Which of the three LLM problems is this, and which tool type fixes it?
 

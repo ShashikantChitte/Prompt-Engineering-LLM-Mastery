@@ -1,4 +1,8 @@
-# Chapter 11 Quick Check - Multimodal Prompting + LLM APIs and Provider Ecosystem
+# Chapter 11 Quick Check
+
+> Chapter 11: - Multimodal Prompting + LLM APIs and Provider Ecosystem
+
+> Related part: Tool-Using LLMs: Function Calling and Structured Outputs
 
 ## 1. A 1024x1024 image sent with detail: high costs more input tokens than the same image sent with detail: low. Why - what is the model actually doing differently in each mode?
 
