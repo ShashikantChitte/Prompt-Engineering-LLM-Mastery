@@ -369,7 +369,7 @@ gemini_tools = [
 
 ### 2. After: Anthropic Claude Tool Definition
 
-```text
+```yaml
 anthropic_tools = [
     {
         "name": "get_exchange_rate",

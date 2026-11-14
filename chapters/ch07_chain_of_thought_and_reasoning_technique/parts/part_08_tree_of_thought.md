@@ -1,4 +1,4 @@
-# Chapter 7 - Part 4: Tree-of-Thought
+# Chapter 7 - Part 8: Tree-of-Thought
 
 > Chapter 7: Chain-of-Thought and Reasoning Techniques
 

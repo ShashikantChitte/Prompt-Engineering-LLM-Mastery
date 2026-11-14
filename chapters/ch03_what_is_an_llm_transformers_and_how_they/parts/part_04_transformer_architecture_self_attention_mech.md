@@ -12,7 +12,7 @@ Here is exactly how data flows through a Transformer from the moment you hit ent
 
 
 
-<img src="../../../assets/images/image8.png" alt="Transformer Architecture Stack" width="450">
+<img src="../../../assets/images/image8.png" alt="Transformer Architecture Stack" width="500">
 
 
 ## Inside the Components: The Mechanics
@@ -155,7 +155,7 @@ When a standard decoder reads text, it is "masked"—meaning it can only look at
 
 
 
-<img src="../../../assets/images/image10.png" alt="Decoder-only vs Encoder-only" width="800">
+<img src="../../../assets/images/image10.png" alt="Decoder-only vs Encoder-only" width="700">
 
 
 
@@ -200,7 +200,7 @@ Unlike an encoder, which can look both left and right across a whole sentence si
 
 
 
-<img src="../../../assets/images/image11.png" alt="Autoregressive Generation" width="800">
+<img src="../../../assets/images/image11.png" alt="Autoregressive Generation" width="700">
 
 
 

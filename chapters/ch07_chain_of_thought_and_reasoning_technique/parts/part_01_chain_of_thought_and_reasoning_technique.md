@@ -1,4 +1,4 @@
-# Unassigned block: Chain-of-Thought and Reasoning Techniques
+# Chapter 7 - Part 1: Chain-of-Thought and Reasoning Techniques
 
 > This block sat inside another chapter in the source document with its own "Class" title, and repeats content that appears elsewhere. It is kept here so nothing is lost; review and merge or delete it.
 

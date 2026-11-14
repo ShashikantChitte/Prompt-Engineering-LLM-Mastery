@@ -1,4 +1,4 @@
-# Chapter 7 - Part 1: The Problem That CoT Solves
+# Chapter 7 - Part 4: The Problem That CoT Solves
 
 > Chapter 7: Chain-of-Thought and Reasoning Techniques
 

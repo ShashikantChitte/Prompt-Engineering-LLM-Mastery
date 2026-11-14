@@ -4,19 +4,19 @@
 
 > Related part: Connection back to reasoning models (Class 3: o1/o3/Claude Extended Thinking)
 
-**1. A model gives a confident wrong answer to a word problem when prompted directly, but gets it right with CoT. Explain mechanically why the intermediate steps help - what changes in the transformer's computation?**
+**Q1. A model gives a confident wrong answer to a word problem when prompted directly, but gets it right with CoT. Explain mechanically why the intermediate steps help - what changes in the transformer's computation?**
 
 **Chain-of-Thought (CoT) helps because an autoregressive transformer performs a fixed amount of computation per generated token; generating intermediate steps multiplies total compute and uses the context window as external working memory.**
 
 When prompted directly, the model must map the entire word problem to the final numerical token in a single forward pass. Adding CoT changes the underlying transformer computation in four specific ways:
 
-#### 1. Expanding Computational Depth Across Time
+## 1. Expanding Computational Depth Across Time
 
-### Q0. Fixed Single-Pass Bottleneck: A transformer has a fixed number of layers (depth L). In a direct prompt, all variable extraction, multi-step arithmetic, and logical dependencies must be resolved within one pass of L layers before the first answer token is emitted.
+- **Fixed Single-Pass Bottleneck:** A transformer has a fixed number of layers (depth L). In a direct prompt, all variable extraction, multi-step arithmetic, and logical dependencies must be resolved within one pass of L layers before the first answer token is emitted.
 
-### Q0. Serial Compute Scaling: Because every generated token triggers a brand-new forward pass through all L layers, generating 50 intermediate tokens gives the model 50× the sequential computational depth to solve the problem before committing to the final answer.
+- **Serial Compute Scaling:** Because every generated token triggers a brand-new forward pass through all L layers, generating 50 intermediate tokens gives the model 50× the sequential computational depth to solve the problem before committing to the final answer.
 
-#### 2. Creating an Externalized Working Memory (KV Cache)
+## 2. Creating an Externalized Working Memory (KV Cache)
 
 - **No Recurrent State:** Standard transformers lack internal recurrent memory that persists across steps without emitting tokens. Hidden activations inside a single pass quickly saturate or interfere when tracking multiple intermediate variables.
 - **Tokenized Scratchpad:** Writing intermediate values into the output stream places them into the **Key-Value (KV) cache** of the context window. In subsequent forward passes, self-attention heads can directly attend to those exact intermediate tokens rather than trying to hold them in compressed hidden states.

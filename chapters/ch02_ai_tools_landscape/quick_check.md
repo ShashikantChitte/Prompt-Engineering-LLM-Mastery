@@ -16,8 +16,7 @@ Shifting from a 128K/200K window to a 1M+ window changes your entire infrastruct
 
 
 
-![image4](../../assets/images/image4.png)
-
+<img src="../../../assets/images/image4.png" alt="Traditional vs Long Context Architecture" width="600">
 
 
 **1. The Death of the Fragile RAG Pipeline**
@@ -79,7 +78,7 @@ GitHub Copilot is architected as an **Application Extension**. It runs inside a 
 
 
 
-![image5](../../assets/images/image5.png)
+<img src="../../../assets/images/image5.png" alt="GitHub Copilot Architecture" width="600">
 
 
 
@@ -93,8 +92,7 @@ Cursor is an **AI-Native Forked Core**. The team literally took the open-source 
 
 
 
-![image6](../../assets/images/image6.png)
-
+<img src="../../../assets/images/image6.png" alt="Cursor IDE Core Architecture" width="600">
 
 
 - **Continuous Semantic Indexing (Local-to-Cloud Pipeline):** Cursor runs a continuous background data pipeline directly over your entire repository. It parses files locally using an Abstract Syntax Tree (AST) chunking engine, builds a local hierarchical **Merkle Tree** to instantly track file state changes (diffs), hashes the modified code, and syncs vector embeddings to a lightning-fast semantic search index.

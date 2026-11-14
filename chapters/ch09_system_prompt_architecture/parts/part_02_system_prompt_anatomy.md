@@ -9,23 +9,34 @@ Rather than writing a single wall of prose, prompt engineers separate concerns u
 ### 1. The Six Core Blocks of a System Prompt
 
 1. **Identity & Mission (<role>)**
-  - **What it does:** Establishes who the model is, its domain expertise, and its primary goal in 1–2 crisp sentences.
-  - **Why it matters:** Sets the baseline probability distribution for vocabulary, reasoning depth, and default demeanor.
+
+   - **What it does:** Establishes who the model is, its domain expertise, and its primary goal in 1–2 crisp sentences.
+   - **Why it matters:** Sets the baseline probability distribution for vocabulary, reasoning depth, and default demeanor.
+  
 2. **Context & Knowledge Grounding (<context_rules>)**
-  - **What it does:** Defines where truth comes from—for example, instructing the model to rely *only* on retrieved RAG documents or tool outputs rather than parametric memory.
-  - **Why it matters:** Prevents hallucinations by giving the model an explicit "I don't know" fallback when evidence is missing.
+
+   - **What it does:** Defines where truth comes from—for example, instructing the model to rely *only* on retrieved RAG documents or tool outputs rather than parametric memory.
+   - **Why it matters:** Prevents hallucinations by giving the model an explicit "I don't know" fallback when evidence is missing.
+
 3. **Behavioral & Tone Guidelines (<instructions> / <tone>)**
-  - **What it does:** Specifies step-by-step workflow rules, reading level, empathy level, and verbosity limits (e.g., *"Use plain language; avoid jargon; keep answers under 150 words"*).
-  - **Why it matters:** Eliminates generic AI filler and aligns responses with your product's UX.
+
+   - **What it does:** Specifies step-by-step workflow rules, reading level, empathy level, and verbosity limits (e.g., *"Use plain language; avoid jargon; keep answers under 150 words"*).
+   - **Why it matters:** Eliminates generic AI filler and aligns responses with your product's UX.
+
 4. **Domain Boundaries & Safety Guardrails (<constraints> / <safety>)**
-  - **What it does:** Defines off-limits topics (e.g., no medical/legal advice), establishes refusal templates, and enforces **instruction hierarchy** against prompt injection.
-  - **Why it matters:** Protects the application from off-topic drift and adversarial user inputs.
+
+   - **What it does:** Defines off-limits topics (e.g., no medical/legal advice), establishes refusal templates, and enforces **instruction hierarchy** against prompt injection.
+   - **Why it matters:** Protects the application from off-topic drift and adversarial user inputs.
+
 5. **Few-Shot Demonstrations (<examples>)**
-  - **What it does:** Provides 2–4 concrete <input> and <output> pairs illustrating tricky edge cases and exact formatting.
-  - **Why it matters:** Anchors the model's in-context learning far more reliably than abstract adjectives alone.
+
+   - **What it does:** Provides 2–4 concrete <input> and <output> pairs illustrating tricky edge cases and exact formatting.
+   - **Why it matters:** Anchors the model's in-context learning far more reliably than abstract adjectives alone.
+
 6. **Output Schema & Formatting Contract (<output_format>)**
-  - **What it does:** Dictates the exact structure of the final response—such as a JSON schema, XML tags, or mandatory Markdown headings.
-  - **Why it matters:** Placed at the **very end** of the system prompt to exploit **recency bias**, ensuring downstream code parsers never break.
+
+   - **What it does:** Dictates the exact structure of the final response—such as a JSON schema, XML tags, or mandatory Markdown headings.
+   - **Why it matters:** Placed at the **very end** of the system prompt to exploit **recency bias**, ensuring downstream code parsers never break.
 
 ### 2. Visual Blueprint & Ordering Logic
 
@@ -40,7 +51,7 @@ Rather than writing a single wall of prose, prompt engineers separate concerns u
 
 ### 3. Complete Annotated Example
 
-```text
+```xml
 <role>
 You are an AI billing specialist for CloudScale. Your job is to answer invoice and subscription questions accurately using only verified policy documents.
 </role>
