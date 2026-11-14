@@ -20,7 +20,7 @@ Machine learning approaches are grouped into primary paradigms based on how mode
 Building and deploying an effective machine learning system typically follows a structured lifecycle.
 
 
-<img src="../../../assets/images/image2.png" alt="image1" width="600">
+<img src="../../../assets/images/image2.png" alt="Machine Learning Workflow" width="500">
 
 
 - **Data Collection and Preparation.** Raw data is gathered, cleaned to fix missing values, and formatted so algorithms can process it reliably.

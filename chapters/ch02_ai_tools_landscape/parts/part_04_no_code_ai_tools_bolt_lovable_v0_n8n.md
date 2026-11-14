@@ -55,5 +55,4 @@ Where the previous tools handle user-facing applications, n8n is the node-based 
 To unlock true architectural freedom, avoid treating these platforms as isolated silos. Combining them creates a comprehensive application factory. The most common engineering design pattern for a no-code MVP utilizes this decoupled architecture:
 
 
-<img src="../../../assets/images/image3.png" alt="image1" width="600">
-
+<img src="../../../assets/images/image3.png" alt="V0 and Lovable Stack" width="750">

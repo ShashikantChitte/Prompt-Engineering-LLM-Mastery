@@ -67,7 +67,7 @@ To understand an RNN, think of how you read this sentence. You don't look at eac
 Traditional neural networks can't do this. They treat every input like a fresh slate. An RNN fixes this by feeding its previous output back into itself as an input for the next step.
 
 
-<img src="../../../assets/images/image7.png" alt="image1" width="600">
+<img src="../../../assets/images/image7.png" alt="RNN Hidden State Flow" width="800">
 
 
 ### The Math Analogy

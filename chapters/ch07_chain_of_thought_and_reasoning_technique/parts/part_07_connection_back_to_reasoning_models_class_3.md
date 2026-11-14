@@ -6,7 +6,7 @@ Modern reasoning models—such as OpenAI's o1/o3 series, Anthropic's Claude Exte
 
 Instead of requiring engineers to write elaborate external orchestration loops in Python, these models execute search, verification, and backtracking **natively inside a single continuous stream of hidden "thinking" tokens**.
 
-### 1. From Prompt Scaffolding to Learned Test-Time Compute
+## 1. From Prompt Scaffolding to Learned Test-Time Compute
 
 Every technique covered earlier solved a specific limitation of standard LLMs through external scaffolding. Modern reasoning models internalize those exact behaviors:
 

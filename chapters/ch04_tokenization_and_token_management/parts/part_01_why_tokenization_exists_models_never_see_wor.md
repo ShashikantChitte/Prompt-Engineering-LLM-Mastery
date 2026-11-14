@@ -4,7 +4,7 @@
 
 **Tokenization** exists because neural networks cannot process raw text directly—they can only perform math on numbers—and splitting text into subword chunks (**tokens**) balances **vocabulary size**, **sequence length**, and the ability to handle **unseen or misspelled words**.
 
-### 1. Neural Networks Only Understand Numbers
+## 1. Neural Networks Only Understand Numbers
 
 At its core, an LLM is a giant matrix-multiplication engine. Before a model can read a sentence, every piece of text must be mapped to a unique integer ID from a fixed lookup table (the vocabulary), which then fetches a dense numerical vector (an embedding). Tokenization defines the exact boundary of each lookup entry.
 

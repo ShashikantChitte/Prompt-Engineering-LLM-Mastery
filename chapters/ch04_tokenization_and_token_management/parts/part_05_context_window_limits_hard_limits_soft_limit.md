@@ -4,7 +4,7 @@
 
 A **context window** is the maximum number of tokens (including your input prompt, conversation history, system instructions, tool outputs, and the model's generated reply) that an LLM can process at one time. It acts as the model's active **working memory**—anything inside the window can be directly attended to, while anything that exceeds the limit gets truncated or forgotten.
 
-### 1. What Counts Inside the Context Window?
+## 1. What Counts Inside the Context Window?
 
 Every single token in an active session shares the same fixed budget:
 

@@ -4,7 +4,7 @@
 
 The same word costs a different number of tokens across different contexts because modern subword tokenizers (like Byte-Pair Encoding) encode raw character sequences—including leading spaces, capitalization, and adjacent punctuation—rather than semantic words. Whenever the surrounding characters change, the tokenizer slices the string differently and maps it to completely different integer IDs.
 
-### 1. Leading Spaces Change Everything
+## 1. Leading Spaces Change Everything
 
 In BPE tokenizers (used by GPT-4, Llama 3, and Mistral), spaces are attached directly to the front of the word that follows them rather than treated as separate tokens.
 

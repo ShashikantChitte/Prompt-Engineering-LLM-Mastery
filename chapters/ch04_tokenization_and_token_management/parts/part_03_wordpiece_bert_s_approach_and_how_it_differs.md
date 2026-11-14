@@ -4,7 +4,7 @@
 
 **WordPiece** is a subword tokenization algorithm developed by Google and famously used in BERT, DistilBERT, and Electra. While it looks structurally similar to Byte-Pair Encoding (BPE), it builds its vocabulary using **likelihood (mutual information)** rather than raw pair frequency, and it tokenizes new text at inference using **greedy longest-match-first** scanning instead of an ordered merge table.
 
-### 1. How WordPiece Builds a Vocabulary (Training)
+## 1. How WordPiece Builds a Vocabulary (Training)
 
 Like BPE, WordPiece starts with a small base vocabulary of individual characters and iteratively merges pairs until reaching a target size (for example, 30,522 tokens in BERT). However, it uses a smarter scoring formula to pick which pair to fuse next:
 

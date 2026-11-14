@@ -36,7 +36,8 @@ When it is time to generate the next word, the Transformer executes a highly eff
 
 
 
-![image12](../../../assets/images/image12.png)
+<img src="../../../assets/images/image12.png" alt="KV Cache Comparison" width="900">
+
 
 
 
@@ -71,7 +72,7 @@ When you hit "Send" on a prompt, the LLM’s execution lifecycle is split into t
 
 
 
-![image13](../../../assets/images/image13.png)
+<img src="../../../assets/images/image13.png" alt="Prefill vs Generation Phase" width="600">
 
 
 
@@ -115,7 +116,7 @@ Once the prefill phase outputs the very first word of the response, the model en
 
 
 
-![image14](../../../assets/images/image14.png)
+<img src="../../../assets/images/image14.png" alt="KV Cache Loop" width="550">
 
 
 
@@ -163,7 +164,7 @@ When a user interacts with an LLM, latency is broken down into two distinct metr
 
 
 
-![image15](../../../assets/images/image15.png)
+<img src="../../../assets/images/image15.png" alt="TTFT vs ITL" width="800">
 
 
 

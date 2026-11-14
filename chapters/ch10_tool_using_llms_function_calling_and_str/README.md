@@ -2,6 +2,7 @@
 
 
 ## Parts
+
 1. [Why Tools Exist: three fundamental LLM problems](parts/part_01_why_tools_exist_three_fundamental_llm_proble.md)
 2. [How Function Calling Works Mechanically](parts/part_02_how_function_calling_works_mechanically.md)
 3. [The Tool Arbiter Pattern](parts/part_03_the_tool_arbiter_pattern.md)
@@ -9,6 +10,7 @@
 5. [Structured Outputs and JSON Mode](parts/part_05_structured_outputs_and_json_mode.md)
 
 ## Code Demos
+
 - Demo 1: [Define and Call a Tool (Weather Lookup)](demos/demo_01_define_and_call_a_tool_weather_lookup.py)
 - Demo 2: [The Tool Arbiter Pattern](demos/demo_02_the_tool_arbiter_pattern.py)
 - Demo 3: [Structured Output with Pydantic](demos/demo_03_structured_output_with_pydantic.py)

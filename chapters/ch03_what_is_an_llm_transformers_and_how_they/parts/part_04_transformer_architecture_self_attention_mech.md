@@ -12,8 +12,7 @@ Here is exactly how data flows through a Transformer from the moment you hit ent
 
 
 
-![image8](../../../assets/images/image8.png)
-
+<img src="../../../assets/images/image8.png" alt="Transformer Architecture Stack" width="450">
 
 
 ## Inside the Components: The Mechanics
@@ -70,8 +69,7 @@ Here is the exact mechanical breakdown of how a raw input becomes an attention-w
 Before the math starts, the model initializes three distinct weight matrices during training: **W****<sub>Q</sub>****(Query)**, **W****<sub>K</sub>****(Key)**, and  **W****<sub>V</sub>****(Value)**. These matrices act as trainable linear projections that convert raw tokens into specific functional representations.
 
 
-
-![image9](../../../assets/images/image9.png)
+<img src="../../../assets/images/image9.png" alt="QKV Attention Mechanism" width="500">
 
 
 
@@ -157,7 +155,7 @@ When a standard decoder reads text, it is "masked"—meaning it can only look at
 
 
 
-![image10](../../../assets/images/image10.png)
+<img src="../../../assets/images/image10.png" alt="Decoder-only vs Encoder-only" width="800">
 
 
 
@@ -202,7 +200,8 @@ Unlike an encoder, which can look both left and right across a whole sentence si
 
 
 
-![image11](../../../assets/images/image11.png)
+<img src="../../../assets/images/image11.png" alt="Autoregressive Generation" width="800">
+
 
 
 
