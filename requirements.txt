@@ -1,0 +1,12 @@
+# Packages used by the code demos (versions intentionally unpinned)
+anthropic
+dspy
+google-generativeai
+matplotlib
+numpy
+openai
+pillow
+pydantic
+requests
+scikit-learn
+tiktoken
