@@ -128,13 +128,11 @@ chapters/
 - Part 4: [Responsible AI Basics](chapters/ch08_advanced_prompting_react_safety_and_resp/parts/part_04_responsible_ai_basics.md)
 - Part 5: [Prompt Chaining](chapters/ch08_advanced_prompting_react_safety_and_resp/parts/part_05_prompt_chaining.md)
 - [Quick Check](chapters/ch08_advanced_prompting_react_safety_and_resp/quick_check.md)
-- Demo 2: [Prompt Chaining Pipeline (Conceptual Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_02_prompt_chaining_pipeline_conceptual_walk.py)
-- Demo 2: [Prompt Chaining: 3-Step Pipeline (Conceptual Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_02_prompt_chaining_3_step_pipeline_conceptu.py)
-- Demo 3: [Safety: Jailbreak Pattern Detection (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_03_safety_jailbreak_pattern_detection_pseud.py)
-- Demo 3: [Safety: Jailbreak Pattern Detection (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_03_safety_jailbreak_pattern_detection_pseud.py)
-- Demo 4: [Plan-and-Execute (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_04_plan_and_execute_pseudocode_walkthrough.py)
-- Demo 4: [Plan-and-Execute (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_04_plan_and_execute_pseudocode_walkthrough.py)
 - Demo 1: [ReAct Loop Simulation (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_01_react_loop_simulation_pseudocode_walkthr.py)
+- Demo 2: [Prompt Chaining Pipeline (Conceptual Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_02_prompt_chaining_pipeline_conceptual_walk.py)
+- Demo 3: [Safety: Jailbreak Pattern Detection (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_03_safety_jailbreak_pattern_detection_pseud.py)
+- Demo 4: [Plan-and-Execute (Pseudocode Walkthrough)](chapters/ch08_advanced_prompting_react_safety_and_resp/demos/demo_04_plan_and_execute_pseudocode_walkthrough.py)
+
 
 ### Chapter 9: System Prompt Architecture
 
