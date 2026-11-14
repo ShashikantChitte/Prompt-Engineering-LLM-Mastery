@@ -15,7 +15,6 @@ chapters/
     parts/part_NN_<part>.md    one file per part
     quick_check.md             questions and answers
     demos/demo_NN_<demo>.py    one script per code demo
-  _unassigned/                 content that did not fit a chapter (review)
 ```
 
 ## Chapters
