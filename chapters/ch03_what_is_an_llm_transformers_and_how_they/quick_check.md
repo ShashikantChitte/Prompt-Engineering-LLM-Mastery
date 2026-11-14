@@ -4,7 +4,7 @@
 
 > Related part: Reasoning models: o1/o3/Claude Extended Thinking - compute at inference time
 
-### Q1. An LLM outputs a probability distribution over the vocabulary at each step. What determines which token actually appears in the output? Name two different strategies.
+### Q1. An LLM outputs a probability distribution over the vocabulary at each step. What determines which token actually appears in the output? Name two different strategies
 
 A decoding strategy (also called a sampling strategy) determines which token actually appears in the output from the model's probability distribution. While the neural network produces raw scores (logits) converted into probabilities via softmax, the decoding algorithm acts as the selection rule that picks the final token at each step.
 
@@ -19,7 +19,7 @@ Greedy decoding always selects the single token with the **highest probability**
 
 #### 2. Top-p (Nucleus) Sampling (Stochastic)
 
-Top-p sampling randomly chooses the next token from the smallest group of top words whose **cumulative probability reaches or exceeds a threshold** ***p*** (such as *p* = 0.9).
+Top-p sampling randomly chooses the next token from the smallest group of top words whose **cumulative probability reaches or exceeds a threshold** $p$ (such as $p = 0.9$).
 
 - **How it works.** The model sorts all tokens from highest to lowest probability, adds them up until their combined probability hits 90%, discards the remaining long tail of unlikely words, and samples randomly from that dynamic "nucleus" of candidates.
 - **Strengths and trade-offs.** Because the candidate pool automatically expands when the model is uncertain and shrinks when the model is confident, top-p sampling balances creativity with coherence. It avoids the robotic loops of greedy decoding while preventing nonsensical, ultra-low-probability words from slipping into the text.
@@ -29,7 +29,7 @@ Top-p sampling randomly chooses the next token from the smallest group of top wo
 | Strategy | Selection Rule | Output Style | Best Use Case |
 | --- | --- | --- | --- |
 | Greedy Decoding | Always picks the single highest-probability token. | Deterministic, focused, and occasionally repetitive. | Code syntax, math, translation, and exact Q&A. |
-| Top-p (Nucleus) Sampling | Randomly samples from the top tokens summing to probability *p*. | Natural, varied, and context-aware. | Creative writing, conversational chat, and brainstorming. |
+| Top-p (Nucleus) Sampling | Randomly samples from the top tokens summing to probability $p$. | Natural, varied, and context-aware. | Creative writing, conversational chat, and brainstorming. |
 
 ### Q2. Why did RNNs struggle with long sequences even after the LSTM's gating mechanism was introduced?
 
@@ -37,14 +37,14 @@ Even with the Long Short-Term Memory (**LSTM**) gating mechanism, Recurrent Neur
 
 #### 1. The Fixed-Size Bottleneck (Information Compression)
 
-An LSTM passes a single hidden state vector (*h**<sub>t</sub>*) and cell state vector (*c*<sub>t</sub>) of fixed dimensions (for example, 512 or 1,024 numbers) from one word to the next.
+An LSTM passes a single hidden state vector ($h_t$) and cell state vector ($c_t$) of fixed dimensions (for example, 512 or 1,024 numbers) from one word to the next.
 
 - **Squeezing Everything Into One Vector.** Whether a document is 20 words or 5,000 words long, the model must cram every relevant fact, subject-verb relationship, and context clue into that exact same fixed-size array.
 - **Memory Overwriting.** Over hundreds of steps, the forget and input gates constantly overwrite older values to make room for new tokens. Crucial details from the beginning of a paragraph inevitably dilute or get erased before the model reaches the end.
 
 #### 2. Sequential Execution Prevents Scaling
 
-RNNs and LSTMs are inherently sequential: calculating step *t* requires the hidden state from step *t*-1.
+RNNs and LSTMs are inherently sequential: calculating step $t$ requires the hidden state from step $t-1$.
 
 - **No Training Parallelization.** Unlike Transformers—which process every token in a prompt simultaneously—an LSTM must step through a 2,000-token sequence one token at a time. This made training on massive datasets painfully slow on modern GPUs and TPUs.
 - **Limited Model Capacity.** Because sequential processing was so slow, researchers could not easily scale LSTMs to billions of parameters or train them on trillions of tokens, capping their ability to learn complex long-range patterns.
@@ -53,8 +53,8 @@ RNNs and LSTMs are inherently sequential: calculating step *t* requires the hidd
 
 LSTMs introduced the **cell state highway** (an additive path controlled by gates) to help gradients flow backward without shrinking to zero. However, this fix had practical limits on very long sequences.
 
-- **Multi-Step Decay.** Even if a forget gate stays at 0.99 at every step, multiplying 0.99 across 500 tokens reduces the signal to 0.99<sup>500</sup> $\approx$ 0.0066. Gradients still fade over very long distances, making it hard to learn dependencies separated by hundreds of words.
-- **O(N) Path Length.** Information from token 1 must travel through *N* sequential recurrent steps to influence token *N*. Every step introduces noise and transformation, whereas self-attention creates a direct **O(1) shortcut** between any two tokens regardless of distance.
+- **Multi-Step Decay.** Even if a forget gate stays at 0.99 at every step, multiplying 0.99 across 500 tokens reduces the signal to $0.99^{500} \approx 0.0066$. Gradients still fade over very long distances, making it hard to learn dependencies separated by hundreds of words.
+- **O(N) Path Length.** Information from token 1 must travel through $N$ sequential recurrent steps to influence token $N$. Every step introduces noise and transformation, whereas self-attention creates a direct **O(1) shortcut** between any two tokens regardless of distance.
 
 ### Summary: Why Transformers Replaced LSTMs
 
@@ -66,11 +66,11 @@ LSTMs introduced the **cell state highway** (an additive path controlled by gate
 
 ### Q3. In self-attention, what are the Queries, Keys, and Values conceptually? If you doubled the number of attention heads without changing d_model, what would you need to adjust?
 
-Conceptually, **Queries (Q), Keys (K), and Values (V)** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads (h) while keeping d_model fixed, you must cut the dimension of each individual head (*d*<sub>k</sub>* and *d*<sub>v</sub>*) in half so the total concatenated output still matches *d*<sub>model</sub>.
+Conceptually, **Queries (Q), Keys (K), and Values (V)** work like a soft, differentiable database lookup system where every token searches the rest of the sequence for relevant context. If you double the number of attention heads ($h$) while keeping $d_{model}$ fixed, you must cut the dimension of each individual head ($d_k$ and $d_v$) in half so the total concatenated output still matches $d_{model}$.
 
 #### 1. Conceptual Role of Queries, Keys, and Values
 
-Every input token embedding is multiplied by three learned weight matrices (W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub>) to produce three distinct vectors:
+Every input token embedding is multiplied by three learned weight matrices ($W_Q$, $W_K$, $W_V$) to produce three distinct vectors:
 
 - **Query (Q) — "What am I looking for?"** Represents the current token's active search request. For example, in the sentence *"The dog chased the ball because* ***it*** *was bouncy"*, the word *"it"* generates a Query looking for a noun that can bounce.
 - **Key (K) — "What do I offer or describe?"** Acts like an index label or metadata tag advertised by every token in the sequence. The word *"ball"* emits a Key signaling *"I am a round, inanimate object"*, while *"dog"* emits a Key signaling *"I am a living animal"*.
@@ -78,47 +78,47 @@ Every input token embedding is multiplied by three learned weight matrices (W<su
 
 #### 2. What Must Change If You Double Attention Heads?
 
-In Multi-Head Attention, the model splits its total embedding width *d*<sub>model</sub> evenly across all parallel attention heads rather than running full-width attention multiple times.
+In Multi-Head Attention, the model splits its total embedding width $d_{model}$ evenly across all parallel attention heads rather than running full-width attention multiple times.
 
 - ***Halve the Per-Head Dimension ($d_k$ and $d_v$).*** The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from **64 down to 32**.
-- **Adjust Projection Matrix Shapes.** The learned projection matrices (*W**<sub>Q</sub>**, W**<sub>K</sub>**, W**<sub>V</sub>*) for each head change shape from (*d*<sub>model</sub>, 64) to (*d*<sub>model</sub>, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix *W**<sub>O</sub>* of shape (*d*<sub>model,</sub> *d*<sub>model</sub>).
-- **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{{d}_{k}}$ to keep gradients stable. Because *d**<sub>k</sub>* is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8 \text{to} \sqrt{32} \approx 5.66$
+- **Adjust Projection Matrix Shapes.** The learned projection matrices ($W_Q$, $W_K$, $W_V$) for each head change shape from ($d_{model}$, 64) to ($d_{model}$, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix $W_O$ of shape ($d_{model}$, $d_{model}$).
+- **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{d_k}$ to keep gradients stable. Because $d_k$ is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8$ to $\sqrt{32} \approx 5.66$.
 
 ### Summary of the Trade-Off
 
 | Parameter | Before Doubling Heads | After Doubling Heads | Impact on the Model |
 | --- | --- | --- | --- |
-| M**odel Dimension (*d<sub>model</sub>*)** | 512 | 512 (Unchanged) | Total parameter count and FLOPs stay roughly identical. |
-| **Number of Heads (h)** | 8 | 16 (Doubled) | Model can track twice as many distinct relationship subspaces (e.g., syntax, coreference, tone) simultaneously. |
+| **Model Dimension ($d_{model}$)** | 512 | 512 (Unchanged) | Total parameter count and FLOPs stay roughly identical. |
+| **Number of Heads ($h$)** | 8 | 16 (Doubled) | Model can track twice as many distinct relationship subspaces (e.g., syntax, coreference, tone) simultaneously. |
 | **Head Dimension ($d_k$, $d_v$)** | 64 | 32 (Halved) | Each individual head has less representational capacity to capture complex features on its own. |
 
 ### Q4. You have a 4096-token prompt and you want to generate 500 tokens. Without KV cache, roughly how many attention operations does the decode phase require compared to with KV cache? (Order of magnitude is fine.)
 
-Without a KV cache, the decode phase requires roughly 4,350× more attention operations—on the order of **10****<sup>10</sup>** token-pair interactions compared to **10****<sup>6</sup>** with a KV cache.
+Without a KV cache, the decode phase requires roughly 4,350× more attention operations—on the order of **\(10^{10}\)** token-pair interactions compared to **\(10^{6}\)** with a KV cache.
 
 ### Step-by-Step Breakdown
 
-Let *P* = 4096 be the prompt length and *G* = 500 be the number of generated tokens. At each decode step *i* (from 1 to 500), the total sequence length is *L**<sub>i</sub>* *= P + i* (growing from 4,097 up to 4,596).
+Let $P = 4096$ be the prompt length and $G = 500$ be the number of generated tokens. At each decode step $i$ (from 1 to 500), the total sequence length is $L_i = P + i$ (growing from 4,097 up to 4,596).
 
-- **Without KV Cache (O(L²) per step):** Because nothing is saved, the model recomputes all Keys, Queries, and Values from scratch for every token in the sequence at every step. This requires computing a full *L**<sub>i</sub>* *X L**<sub>i</sub>* attention matrix at each iteration:
-
-$$
-\sum_{i=1}^{500} {\left( 4096 + i \right)}^{2} \approx 500 \times {\left( 4346 \right)}^{2} \approx {9.46 \times 10}^{9}\text{operations}
-$$
-
-- **With KV Cache (O(L) per step):** Past Keys and Values are stored in GPU memory. The model only computes a single Query vector for the newest token and attends it against the *L**<sub>i</sub>* cached Keys(1 X *L**<sub>i</sub>*):
+- **Without KV Cache (O(L²) per step):** Because nothing is saved, the model recomputes all Keys, Queries, and Values from scratch for every token in the sequence at every step. This requires computing a full $L_i \times L_i$ attention matrix at each iteration:
 
 $$
-\sum_{i=1}^{500} \left( 4096 + i \right) \approx 500 \times 4346 \approx {2.17 \times 10}^{6}\text{operations}
+\sum_{i=1}^{500} {\left( 4096 + i \right)}^{2} \approx 500 \times {\left( 4346 \right)}^{2} \approx 9.46 \times 10^{9}\text{ operations}
+$$
+
+- **With KV Cache (O(L) per step):** Past Keys and Values are stored in GPU memory. The model only computes a single Query vector for the newest token and attends it against the $L_i$ cached Keys ($1 \times L_i$):
+
+$$
+\sum_{i=1}^{500} \left( 4096 + i \right) \approx 500 \times 4346 \approx 2.17 \times 10^{6}\text{ operations}
 $$
 
 ### Comparison Summary
 
 | Metric | Without KV Cache | With KV Cache |
 | --- | --- | --- |
-| Work at Step *i* | (4096 + i)<sup>2</sup> token-pair scores | 1 X (4096 + i) token-pair scores |
-| Total Decode Operations |   |   |
-| Scaling Complexity | Quadratic per step (O(G . L<sup>2</sup>)) | Linear per step O(G . L)) |
+| Work at Step $i$ | $(4096 + i)^2$ token-pair scores | $1 \times (4096 + i)$ token-pair scores |
+| Total Decode Operations | $\approx 9.46 \times 10^{9} (\sim 10^{10})$ | $\approx 2.17 \times 10^{6} (\sim 10^{6})$ |
+| Scaling Complexity | Quadratic per step (O(G . L²)) | Linear per step O(G . L) |
 | Relative Overhead | **~ 4,350 X more compute** (roughly the average sequence length) | Baseline (1 X) |
 
 ### Q5. A Mistral 8x7B MoE model has ~47B total parameters but ~13B active per token. What are the two main downsides of MoE compared to a dense model of the same active-parameter count?
@@ -157,12 +157,12 @@ During generation, an MoE model behaves very differently from a dense 13B model 
 Instead of changing the equation:
 
 $$
-\text{Softmax}\left( \frac{Q{K}^{T}}{\sqrt{{d}_{k}}} \right)V
+\text{Softmax}\left( \frac{QK^{T}}{\sqrt{d_{k}}} \right)V
 $$
 
 FlashAttention changes the **memory access pattern (IO-awareness)** using three execution tricks:
 
-- **SRAM Tiling Instead of Full Matrix Materialization.** Standard attention computes the entire N × N attention score matrix QK<sup>T</sup>, writes it out to slow HBM (VRAM), reads it back to compute softmax, writes it out again, and reads it back a third time to multiply by V. FlashAttention splits Q, K, and V into small blocks (tiles) that fit inside ultra-fast on-chip SRAM (~20 MB), computing attention block-by-block without ever writing the N × N matrix to HBM.
+- **SRAM Tiling Instead of Full Matrix Materialization.** Standard attention computes the entire N × N attention score matrix $QK^T$, writes it out to slow HBM (VRAM), reads it back to compute softmax, writes it out again, and reads it back a third time to multiply by V. FlashAttention splits Q, K, and V into small blocks (tiles) that fit inside ultra-fast on-chip SRAM (~20 MB), computing attention block-by-block without ever writing the N × N matrix to HBM.
 - **Online Softmax (Incremental Rescaling).** Because softmax normally needs the sum of all scores across an entire row before normalizing, standard attention must materialize the whole row first. FlashAttention tracks a running maximum and normalization factor as each tile passes through SRAM, rescaling partial outputs on the fly so it only ever stores the compact final output vector.
 - **Kernel Fusion.** Standard frameworks launch separate GPU kernels for matrix multiplication, causal masking, softmax, and dropout—each requiring a round-trip to HBM. FlashAttention fuses all of these steps into a single CUDA kernel so intermediate values stay inside GPU registers and SRAM.
 
