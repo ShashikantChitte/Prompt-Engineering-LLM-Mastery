@@ -80,7 +80,7 @@ Every input token embedding is multiplied by three learned weight matrices **($W
 
 In Multi-Head Attention, the model splits its total embedding width $d_{model}$ evenly across all parallel attention heads rather than running full-width attention multiple times.
 
-- **Halve the Per-Head Dimension** ***($d_k$ and $d_v$)*.** The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from 64 down to 32.
+- **Halve the Per-Head Dimension** <b><i>($d_k$ and $d_v$)</i></b>**.** The standard relationship is $d_{model} = h \times d_k$. If $d_{model}$ stays at 512 and you double the heads from 8 to 16, each head's projection size ($d_k$ and $d_v$) must shrink from 64 down to 32.
 - **Adjust Projection Matrix Shapes.** The learned projection matrices ($W_Q$, $W_K$, $W_V$) for each head change shape from ($d_{model}$, 64) to ($d_{model}$, 32) so that when all 16 head outputs are concatenated back together (16 × 32 = 512), they fit cleanly into the final output projection matrix $W_O$ of shape ($d_{model}$, $d_{model}$).
 - **Update the Scaling Factor $(\sqrt{d_k})$.** Inside scaled dot-product attention, scores are divided by $\sqrt{d_k}$ to keep gradients stable. Because $d_k$ is halved, the scaling denominator adjusts automatically from $\sqrt{64} = 8$ to $\sqrt{32} \approx 5.66$.
 
